@@ -21,6 +21,7 @@
 -->
 ## Upcoming Release
 * Fixed `Get-AzVm` cmdlet when parameter "-Status" is provided, return property `OsName`, `OsVersion` and `HyperVGeneration`
+* Upgraded AutoMapper to Microsoft.Azure.PowerShell.AutoMapper with fix [#18721]
 
 ## Version 5.1.0
 * Fixed EdgeZone does not pass to VM for `New-AzVM` "SimpleParameterSet" [#18978] 

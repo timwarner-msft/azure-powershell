@@ -18,6 +18,7 @@
         - Additional information about change #1
 -->
 ## Upcoming Release
+* Upgraded AutoMapper to Microsoft.Azure.PowerShell.AutoMapper with fix [#18721]
 
 ## Version 4.0.0
 * [Breaking Change] Changed the type of parameter `Sku` from Enum to String in `Add-AzApiManagementRegion`, `New-AzApiManagement` and `Update-AzApiManagementRegion`.

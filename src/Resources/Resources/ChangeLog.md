@@ -19,6 +19,7 @@
 -->
 
 ## Upcoming Release
+* Upgraded AutoMapper to Microsoft.Azure.PowerShell.AutoMapper with fix [#18721]
 
 ## Version 6.4.0
 * Fixed parameter `Count` for

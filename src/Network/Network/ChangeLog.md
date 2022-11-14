@@ -19,6 +19,7 @@
 --->
 
 ## Upcoming Release
+* Upgraded AutoMapper to Microsoft.Azure.PowerShell.AutoMapper with fix [#18721]
 
 ## Version 5.1.1
 * Fixed bug with New-AzCustomIpPrefix
