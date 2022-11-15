@@ -18,6 +18,8 @@
         - Additional information about change #1
 -->
 ## Upcoming Release
+
+## Version 6.1.1
 * Fixed the pagination bug in Get-AzRecoveryServicesAsrProtectableItem for the V2ARCM scenario.
 * Upgraded AutoMapper to Microsoft.Azure.PowerShell.AutoMapper with fix [#18721]
 

@@ -20,6 +20,8 @@
 
 -->
 ## Upcoming Release
+
+## Version 5.2.0
 * Fixed `Get-AzVm` cmdlet when parameter "-Status" is provided, return property `OsName`, `OsVersion` and `HyperVGeneration`
 * Upgraded AutoMapper to Microsoft.Azure.PowerShell.AutoMapper with fix [#18721]
 
