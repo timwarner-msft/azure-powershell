@@ -26,12 +26,12 @@
     <ProjectReference Include="..\Authentication\Authentication.csproj" />
   </ItemGroup>
 
-  <Target Name="CopyFiles" AfterTargets="Build">
+  <!--<Target Name="CopyFiles" AfterTargets="Build">
     <ItemGroup>
       <OutputAssembly Include="$(TargetDir)\$(AssemblyName).dll" />
     </ItemGroup>
     <Copy SourceFiles="@(OutputAssembly)" DestinationFolder="$(RepoArtifacts)$(Configuration)\Az.Accounts\PreloadAssemblies" />
-  </Target>
+  </Target>-->
 
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., build.proj))\src\Az.Post.props" />
 

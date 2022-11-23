@@ -23,25 +23,26 @@ namespace Microsoft.Azure.PowerShell.AuthenticationAssemblyLoadContext
     public static class AzAssemblyLoadContextInitializer
     {
         private static string AzSharedAssemblyDirectory { get; set; }
-        private static ConcurrentDictionary<string, Version> AzSharedAssemblyMap { get; set; }
+        private static ConcurrentDictionary<string, (string Framework, Version Version)> AzSharedAssemblyMap { get; set; }
         private static ConcurrentDictionary<string, string> ModuleAlcEntryAssemblyMap { get; set; }
 
         static AzAssemblyLoadContextInitializer()
         {
-            //TODO: Generate assembly version info into AzSharedAssemblies.json during build
-            var azSharedAssemblies = new Dictionary<string, Version>()
-            {
-                {"Azure.Core", new Version("1.25.0.0")},
-                {"Azure.Identity", new Version("1.6.1.0")},
-                {"Microsoft.Bcl.AsyncInterfaces", new Version("1.1.1.0")},
-                {"Microsoft.Identity.Client", new Version("4.46.2.0") },
-                {"Microsoft.Identity.Client.Extensions.Msal", new Version("2.23.0.0") },
-                {"Microsoft.IdentityModel.Abstractions", new Version("6.22.1.0") },
-                {"System.Memory.Data", new Version("1.0.2.0")},
-                {"System.Text.Json", new Version("4.0.1.2")},
-            };
+            var azSharedAssemblies = AssemblyLoading.ConditionalAssemblyProvider.GetAssemblies();
+            ////TODO: Generate assembly version info into AzSharedAssemblies.json during build
+            //var azSharedAssemblies = new Dictionary<string, Version>()
+            //{
+            //    {"Azure.Core", new Version("1.25.0.0")},
+            //    {"Azure.Identity", new Version("1.6.1.0")},
+            //    {"Microsoft.Bcl.AsyncInterfaces", new Version("1.1.1.0")},
+            //    {"Microsoft.Identity.Client", new Version("4.46.2.0") },
+            //    {"Microsoft.Identity.Client.Extensions.Msal", new Version("2.23.0.0") },
+            //    {"Microsoft.IdentityModel.Abstractions", new Version("6.22.1.0") },
+            //    {"System.Memory.Data", new Version("1.0.2.0")},
+            //    {"System.Text.Json", new Version("4.0.1.2")},
+            //};
 
-            AzSharedAssemblyMap = new ConcurrentDictionary<string, Version>(azSharedAssemblies, StringComparer.OrdinalIgnoreCase);
+            AzSharedAssemblyMap = new ConcurrentDictionary<string, (string, Version)>(azSharedAssemblies, StringComparer.OrdinalIgnoreCase);
 
             ModuleAlcEntryAssemblyMap = new ConcurrentDictionary<string, string>();
         }
@@ -68,9 +69,11 @@ namespace Microsoft.Azure.PowerShell.AuthenticationAssemblyLoadContext
 
         private static System.Reflection.Assembly Default_Resolving(AssemblyLoadContext context, System.Reflection.AssemblyName assemblyName)
         {
-            if (AzSharedAssemblyMap.ContainsKey(assemblyName.Name) && AzSharedAssemblyMap[assemblyName.Name] >= assemblyName.Version)
+            if (AzSharedAssemblyMap.TryGetValue(assemblyName.Name, out var azSharedAssembly) && azSharedAssembly.Version >= assemblyName.Version)
             {
-                return AzAssemblyLoadContext.GetForDirectory(AzSharedAssemblyDirectory).LoadFromAssemblyName(assemblyName);
+                // todo: how to leverage assembly cache of AzALC?
+                //return AzAssemblyLoadContext.GetForDirectory(AzSharedAssemblyDirectory).LoadFromAssemblyName(assemblyName);
+                return AzAssemblyLoadContext.GetForDirectory(AzSharedAssemblyDirectory).LoadFromAssemblyPath(Path.Combine(AzSharedAssemblyDirectory, azSharedAssembly.Framework, assemblyName.Name + ".dll"));
             }
 
             if (ModuleAlcEntryAssemblyMap.TryGetValue(assemblyName.Name, out string moduleLoadContextDirectory))

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<Import Project="$(MSBuildThisFileDirectory)..\..\Az.Test.props" />
+
+	<PropertyGroup>
+		<AssemblyName>Microsoft.Azure.PowerShell.AssemblyLoading.Test</AssemblyName>
+		<RootNamespace>Microsoft.Azure.PowerShell.AssemblyLoading.Test</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\AssemblyLoading\AssemblyLoading.csproj" />
+	</ItemGroup>
+
+</Project>
