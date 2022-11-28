@@ -17,16 +17,34 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.PowerShell.AssemblyLoading
 {
+    /// <summary>
+    /// Contains a set of definitions of constraints of conditional assemblies here, using builder pattern.
+    /// </summary>
     public static class ConditionalAssemblyExtensions
     {
+        /// <summary>
+        /// The given assembly should be loaded in Windows PowerShell.
+        /// </summary>
         public static IConditionalAssembly WithWindowsPowerShell(this IConditionalAssembly assembly)
         {
             return assembly.WithPowerShellVersion(new Version("5.0.0"), new Version("6.0.0"));
         }
+
+        /// <summary>
+        /// The given assembly should be loaded in PowerShell Core (6+).
+        /// </summary>
         public static IConditionalAssembly WithPowerShellCore(this IConditionalAssembly assembly)
         {
             return assembly.WithPowerShellVersion(new Version("6.0.0"));
         }
+
+        /// <summary>
+        /// The given assembly should be loaded when the version of PowerShell lies in
+        /// [<paramref name="lower"/>, <paramref name="upper"/>).
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="lower">Lower limit of PowerShell version, inclusive.</param>
+        /// <param name="upper">Upper limit of PowerShell version, exclusive.</param>
         public static IConditionalAssembly WithPowerShellVersion(this IConditionalAssembly assembly, Version lower, Version upper = null)
         {
             bool shouldLoad = lower <= assembly.Context.PSVersion;
@@ -38,12 +56,21 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
             return assembly;
         }
 
+        /// <summary>
+        /// The given assembly should be loaded on Windows.
+        /// </summary>
         public static IConditionalAssembly WithWindows(this IConditionalAssembly assembly)
             => assembly.WithOS(OSPlatform.Windows);
 
+        /// <summary>
+        /// The given assembly should be loaded on Mac OS.
+        /// </summary>
         public static IConditionalAssembly WithMacOS(this IConditionalAssembly assembly)
             => assembly.WithOS(OSPlatform.OSX);
 
+        /// <summary>
+        /// The given assembly should be loaded on Linux.
+        /// </summary>
         public static IConditionalAssembly WithLinux(this IConditionalAssembly assembly)
             => assembly.WithOS(OSPlatform.Linux);
 
@@ -53,10 +80,21 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
             return assembly;
         }
 
+        /// <summary>
+        /// The given assembly should be loaded on x86 platform.
+        /// </summary>
         public static IConditionalAssembly WithX86(this IConditionalAssembly assembly)
             => assembly.WithOSArchitecture(Architecture.X86);
+
+        /// <summary>
+        /// The given assembly should be loaded on x64 platform.
+        /// </summary>
         public static IConditionalAssembly WithX64(this IConditionalAssembly assembly)
             => assembly.WithOSArchitecture(Architecture.X64);
+
+        /// <summary>
+        /// The given assembly should be loaded on ARM64 platform.
+        /// </summary>
         public static IConditionalAssembly WithArm64(this IConditionalAssembly assembly)
             => assembly.WithOSArchitecture(Architecture.Arm64);
 

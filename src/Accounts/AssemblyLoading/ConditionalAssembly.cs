@@ -16,6 +16,7 @@ using System;
 
 namespace Microsoft.Azure.PowerShell.AssemblyLoading
 {
+    /// <inheritdoc/>
     public class ConditionalAssembly : IConditionalAssembly
     {
         public ConditionalAssembly(IConditionalAssemblyContext context, string name, string framework, Version version)
@@ -27,20 +28,25 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
             ShouldLoad = true;
         }
 
+        /// <inheritdoc/>
         public bool ShouldLoad { get; private set; }
 
+        /// <inheritdoc/>
         public void UpdateShouldLoad(bool shouldLoad)
         {
             ShouldLoad = ShouldLoad && shouldLoad;
         }
 
+        /// <inheritdoc/>
         public IConditionalAssemblyContext Context { get; }
 
+        /// <inheritdoc/>
         public Version Version { get; }
 
+        /// <inheritdoc/>
         public string Name { get; }
 
+        /// <inheritdoc/>
         public string Framework { get; }
-
     }
 }

@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.PowerShell.AssemblyLoading.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using System;
 using System.Runtime.InteropServices;
 using Xunit;
@@ -22,6 +23,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
     public class ConditionalAssemblyTests
     {
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ShouldLoadAssemblyWithoutConstraint()
         {
             var context = new MockConditionalAssemblyContext();
@@ -30,6 +32,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ShouldLoadAssemblyAccordingToPSVersion()
         {
             // windows powershell
@@ -53,6 +56,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ShouldLoadAssemblyAccordingToOS()
         {
             // windows
@@ -93,6 +97,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ShouldLoadAssemblyAccordingToCpuArch()
         {
             // x86
@@ -133,6 +138,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void ShouldSupportMultipleConstraints()
         {
             // assembly requires powershell 7+ on linux

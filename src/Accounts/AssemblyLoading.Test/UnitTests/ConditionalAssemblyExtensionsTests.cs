@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.PowerShell.AssemblyLoading.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using System;
 using System.Runtime.InteropServices;
 using Xunit;
@@ -22,6 +23,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
     public class ConditionalAssemblyExtensionsTests
     {
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanWorkWithPSVersion()
         {
             var windowsPSContext = new MockConditionalAssemblyContext()
@@ -51,6 +53,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanWorkWithOS()
         {
             var windowsContext = new MockConditionalAssemblyContext()

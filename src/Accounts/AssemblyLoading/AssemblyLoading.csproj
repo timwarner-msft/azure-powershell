@@ -6,10 +6,9 @@
 	<Import Project="$(MSBuildThisFileDirectory)..\..\Az.props" />
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
 		<AssemblyName>Microsoft.Azure.PowerShell.AssemblyLoading</AssemblyName>
 		<RootNamespace>Microsoft.Azure.PowerShell.AssemblyLoading</RootNamespace>
 	</PropertyGroup>
-	
+
 	<Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory).., build.proj))\src\Az.Post.props" />
 </Project>

@@ -13,6 +13,7 @@
 // ----------------------------------------------------------------------------------
 
 using Microsoft.Azure.PowerShell.AssemblyLoading.Test.Mocks;
+using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using System;
 using System.Runtime.InteropServices;
 using Xunit;
@@ -26,6 +27,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
         private const string NetCoreApp21 = "netcoreapp2.1";
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanGetAssembliesOnWindowsPowerShell()
         {
             var context = new MockConditionalAssemblyContext()
@@ -47,6 +49,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
         }
 
         [Fact]
+        [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void CanGetAssembliesOnPowerShellCorePlus()
         {
             var context = new MockConditionalAssemblyContext()

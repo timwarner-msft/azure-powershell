@@ -17,10 +17,27 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.PowerShell.AssemblyLoading
 {
+    /// <summary>
+    /// Context with information about the current environment.
+    /// Used to calculate if this assembly should be loaded.
+    /// </summary>
     public interface IConditionalAssemblyContext
     {
+        /// <summary>
+        /// Version of PowerShell. For example "5.1.22621.608".
+        /// </summary>
         Version PSVersion { get; }
+
+        /// <summary>
+        /// Returns if the current operating system matches <paramref name="os"/>.
+        /// </summary>
+        /// <param name="os">The expected operating system</param>
         bool IsOSPlatform(OSPlatform os);
+
+        /// <summary>
+        /// OS Architecture. For example "X86".
+        /// </summary>
+        /// <value></value>
         Architecture OSArchitecture { get; }
     }
 }

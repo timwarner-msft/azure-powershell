@@ -17,6 +17,7 @@ using System.Runtime.InteropServices;
 
 namespace Microsoft.Azure.PowerShell.AssemblyLoading
 {
+    /// <inheritdoc/>
     public class ConditionalAssemblyContext : IConditionalAssemblyContext
     {
         public ConditionalAssemblyContext(Version psVersion)
@@ -24,14 +25,13 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
             PSVersion = psVersion;
         }
 
-        public static IConditionalAssemblyContext Instance { get; private set; }
-        public static void Initialize(string psVersion)
-        {
-            Instance = new ConditionalAssemblyContext(new Version(psVersion));
-        }
-
+        /// <inheritdoc/>
         public Version PSVersion { get; private set; }
+
+        /// <inheritdoc/>
         public bool IsOSPlatform(OSPlatform os) => RuntimeInformation.IsOSPlatform(os);
+
+        /// <inheritdoc/>
         public Architecture OSArchitecture => RuntimeInformation.OSArchitecture;
     }
 }

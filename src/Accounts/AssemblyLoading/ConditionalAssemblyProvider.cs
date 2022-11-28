@@ -18,10 +18,13 @@ using System.Linq;
 
 namespace Microsoft.Azure.PowerShell.AssemblyLoading
 {
+    /// <summary>
+    /// Provides a set of assemblies to load for different environments.
+    /// </summary>
     public static class ConditionalAssemblyProvider
     {
-        private static IConditionalAssemblyContext _context;
-        private static IEnumerable<IConditionalAssembly> _assemblies;
+        private static IConditionalAssemblyContext _context = null;
+        private static IEnumerable<IConditionalAssembly> _assemblies = null;
 
         public static void Initialize(IConditionalAssemblyContext context)
         {
@@ -68,11 +71,18 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
             };
         }
 
+        /// <summary>
+        /// Shorthand syntax to define a conditional assembly.
+        /// </summary>
         private static ConditionalAssembly CreateAssembly(string framework, string name, string version)
             => new ConditionalAssembly(_context, name, framework, new Version(version));
 
+        /// <summary>
+        /// Returns a set of assemblies that should be loaded into the current environment.
+        /// </summary>
         public static IDictionary<string, (string Framework, Version Version)> GetAssemblies()
         {
+            if (_context == null || _assemblies == null) throw new InvalidOperationException($"Call {nameof(Initialize)}() first.");
             return _assemblies.Where(x => x.ShouldLoad).ToDictionary(x => x.Name, x => (x.Framework, x.Version));
         }
     }
