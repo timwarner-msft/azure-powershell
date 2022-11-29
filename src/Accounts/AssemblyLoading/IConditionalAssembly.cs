@@ -33,9 +33,9 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
         string Name { get; }
 
         /// <summary>
-        /// Target framework of the assembly. Should be the name of its containing folder.
+        /// Path to the assembly file.
         /// </summary>
-        string Framework { get; }
+        string Path { get; }
 
         /// <summary>
         /// Assembly version.

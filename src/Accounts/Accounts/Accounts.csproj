@@ -28,10 +28,8 @@
     <Copy SourceFiles="@(NetCore21Assemblies)" DestinationFolder="$(TargetDir)lib\netcoreapp2.1" />
     <Copy SourceFiles="@(NetCore31Assemblies)" DestinationFolder="$(TargetDir)lib\netcoreapp3.1" />
     <Copy SourceFiles="@(NetStandardAssemblies)" DestinationFolder="$(TargetDir)lib\netstandard2.0" />
-    <!--<Copy SourceFiles="@(PreLoadAssemblies)" DestinationFolder="$(TargetDir)PreloadAssemblies" />
-    <Copy SourceFiles="@(NetCoreAssemblies)" DestinationFolder="$(TargetDir)AzSharedAlcAssemblies" />-->
     <Copy SourceFiles="@(StorageDependencies)" DestinationFolder="$(TargetDir)" />
-    <!--To automatically lauch pwsh for debugging when hitting F5, set below and UNCOMMENT Copy:
+    <!--To automatically launch pwsh for debugging when hitting F5, set below and UNCOMMENT Copy:
       Executable: pwsh
       Application arguments: -NoExit -Command "Import-Module C:\AME\azure-powershell\artifacts\Debug\Az.Accounts\Az.Accounts.psd1"-->
     <!--<Copy SourceFiles="@(NetCoreAssemblies)" DestinationFolder="$(TargetDir)" />-->

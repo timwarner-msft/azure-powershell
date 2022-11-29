@@ -26,7 +26,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.Mocks
 
         public string Name { get; set; }
 
-        public string Framework { get; set; }
+        public string Path { get; set; }
 
         public Version Version { get; set; }
 

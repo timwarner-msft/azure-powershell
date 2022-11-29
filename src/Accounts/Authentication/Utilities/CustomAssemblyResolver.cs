@@ -22,15 +22,11 @@ namespace Microsoft.Azure.Commands.Profile.Utilities
 {
     public static class CustomAssemblyResolver
     {
-        private static IDictionary<string, (string Framework, Version Version)> NetFxPreloadAssemblies = ConditionalAssemblyProvider.GetAssemblies();
-
-        private static string PreloadAssemblyFolder { get; set; }
+        private static IDictionary<string, (string Path, Version Version)> NetFxPreloadAssemblies = ConditionalAssemblyProvider.GetAssemblies();
 
         public static void Initialize()
         {
             //This function is call before loading assemblies in PreloadAssemblies folder, so NewtonSoft.Json could not be used here
-            var accountFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            PreloadAssemblyFolder = Path.Combine(accountFolder, "lib");
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
         }
 
@@ -49,8 +45,7 @@ namespace Microsoft.Azure.Commands.Profile.Utilities
                         && (assembly.Version.Major == name.Version.Major
                             || string.Equals(name.Name, "Newtonsoft.Json", StringComparison.OrdinalIgnoreCase)))
                     {
-                        string requiredAssembly = Path.Combine(PreloadAssemblyFolder, assembly.Framework, $"{name.Name}.dll");
-                        return Assembly.LoadFrom(requiredAssembly);
+                        return Assembly.LoadFrom(assembly.Path);
                     }
                 }
             }

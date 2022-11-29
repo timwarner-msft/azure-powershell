@@ -14,7 +14,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace Microsoft.Azure.PowerShell.AssemblyLoading
 {
@@ -25,10 +27,17 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
     {
         private static IConditionalAssemblyContext _context = null;
         private static IEnumerable<IConditionalAssembly> _assemblies = null;
+        private static string _rootPath = null;
 
-        public static void Initialize(IConditionalAssemblyContext context)
+        /// <summary>
+        /// Initializes the conditional assembly provider.
+        /// </summary>
+        /// <param name="rootPath">Root path of the assemblies.</param>
+        /// <param name="context">Context according to which an assembly is loaded or not.</param>
+        public static void Initialize(string rootPath, IConditionalAssemblyContext context)
         {
-            _context = context;
+            _rootPath = rootPath ?? throw new ArgumentNullException(nameof(rootPath));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
             _assemblies = new List<IConditionalAssembly>()
             {
                 // todo: add a tool to update assembly versions after replacing the assemblies. (Can it support newly introduced assemblies?)
@@ -75,7 +84,10 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
         /// Shorthand syntax to define a conditional assembly.
         /// </summary>
         private static ConditionalAssembly CreateAssembly(string framework, string name, string version)
-            => new ConditionalAssembly(_context, name, framework, new Version(version));
+        {
+            string path = Path.Combine(_rootPath, framework, $"{name}.dll");
+            return new ConditionalAssembly(_context, name, path, new Version(version));
+        }
 
         /// <summary>
         /// Returns a set of assemblies that should be loaded into the current environment.
@@ -83,7 +95,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
         public static IDictionary<string, (string Framework, Version Version)> GetAssemblies()
         {
             if (_context == null || _assemblies == null) throw new InvalidOperationException($"Call {nameof(Initialize)}() first.");
-            return _assemblies.Where(x => x.ShouldLoad).ToDictionary(x => x.Name, x => (x.Framework, x.Version));
+            return _assemblies.Where(x => x.ShouldLoad).ToDictionary(x => x.Name, x => (x.Path, x.Version));
         }
     }
 }

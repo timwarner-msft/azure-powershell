@@ -19,11 +19,11 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
     /// <inheritdoc/>
     public class ConditionalAssembly : IConditionalAssembly
     {
-        public ConditionalAssembly(IConditionalAssemblyContext context, string name, string framework, Version version)
+        public ConditionalAssembly(IConditionalAssemblyContext context, string name, string path, Version version)
         {
             Context = context;
             Name = name;
-            Framework = framework;
+            Path = path;
             Version = version;
             ShouldLoad = true;
         }
@@ -47,6 +47,6 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
         public string Name { get; }
 
         /// <inheritdoc/>
-        public string Framework { get; }
+        public string Path { get; }
     }
 }
