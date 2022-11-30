@@ -14,21 +14,29 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Loader;
+using Microsoft.Azure.PowerShell.AssemblyLoading;
 
 namespace Microsoft.Azure.PowerShell.AuthenticationAssemblyLoadContext
 {
     public static class AzAssemblyLoadContextInitializer
     {
+        /// <summary>
+        /// The root directory containing assemblies shared by Az modules.
+        /// </summary>
+        /// <remarks>
+        /// Though the value was intended to be combined with assembly name and work out its full path,
+        /// now with <see cref="ConditionalAssemblyProvider"/> we no longer need to calculate it.
+        /// So the only purpose left is to identify this special shared ALC.
+        /// </remarks>
         private static string AzSharedAssemblyDirectory { get; set; }
-        private static ConcurrentDictionary<string, (string Framework, Version Version)> AzSharedAssemblyMap { get; set; }
+        private static ConcurrentDictionary<string, (string Path, Version Version)> AzSharedAssemblyMap { get; set; }
         private static ConcurrentDictionary<string, string> ModuleAlcEntryAssemblyMap { get; set; }
 
         static AzAssemblyLoadContextInitializer()
         {
-            var azSharedAssemblies = AssemblyLoading.ConditionalAssemblyProvider.GetAssemblies();
+            var azSharedAssemblies = ConditionalAssemblyProvider.GetAssemblies();
 
             AzSharedAssemblyMap = new ConcurrentDictionary<string, (string, Version)>(azSharedAssemblies, StringComparer.OrdinalIgnoreCase);
 
@@ -61,7 +69,7 @@ namespace Microsoft.Azure.PowerShell.AuthenticationAssemblyLoadContext
             {
                 // todo: how to leverage assembly cache of AzALC?
                 //return AzAssemblyLoadContext.GetForDirectory(AzSharedAssemblyDirectory).LoadFromAssemblyName(assemblyName);
-                return AzAssemblyLoadContext.GetForDirectory(AzSharedAssemblyDirectory).LoadFromAssemblyPath(Path.Combine(AzSharedAssemblyDirectory, azSharedAssembly.Framework, assemblyName.Name + ".dll"));
+                return AzAssemblyLoadContext.GetForDirectory(AzSharedAssemblyLoadContext.Key).LoadFromAssemblyPath(azSharedAssembly.Path);
             }
 
             if (ModuleAlcEntryAssemblyMap.TryGetValue(assemblyName.Name, out string moduleLoadContextDirectory))

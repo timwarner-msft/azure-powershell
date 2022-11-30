@@ -92,7 +92,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading
         /// <summary>
         /// Returns a set of assemblies that should be loaded into the current environment.
         /// </summary>
-        public static IDictionary<string, (string Framework, Version Version)> GetAssemblies()
+        public static IDictionary<string, (string Path, Version Version)> GetAssemblies()
         {
             if (_context == null || _assemblies == null) throw new InvalidOperationException($"Call {nameof(Initialize)}() first.");
             return _assemblies.Where(x => x.ShouldLoad).ToDictionary(x => x.Name, x => (x.Path, x.Version));

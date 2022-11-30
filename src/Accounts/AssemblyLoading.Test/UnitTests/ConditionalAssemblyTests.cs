@@ -166,7 +166,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
 
         private static ConditionalAssembly NewDummyAssembly(MockConditionalAssemblyContext context)
         {
-            return new ConditionalAssembly(context, "name", "framework", new Version(1, 0, 0));
+            return new ConditionalAssembly(context, "name", "path", new Version(1, 0, 0));
         }
     }
 }

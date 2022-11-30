@@ -15,6 +15,7 @@
 using Microsoft.Azure.PowerShell.AssemblyLoading.Test.Mocks;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using Xunit;
 
@@ -25,6 +26,7 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
         private const string NetFx = "netfx";
         private const string NetStandard20 = "netstandard2.0";
         private const string NetCoreApp21 = "netcoreapp2.1";
+        private const string RootPath = "root";
 
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
@@ -36,16 +38,16 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
                 PSVersion = Version.Parse("5.1.22621.608"),
                 OSArchitecture = Architecture.X64
             };
-            ConditionalAssemblyProvider.Initialize(context);
+            ConditionalAssemblyProvider.Initialize(RootPath, context);
             var assemblies = ConditionalAssemblyProvider.GetAssemblies();
 
             Assert.True(assemblies.TryGetValue("Azure.Core", out var azureCore));
-            Assert.Equal(NetFx, azureCore.Framework);
+            Assert.Equal(GetExpectedAssemblyPath(NetFx, "Azure.Core"), azureCore.Path);
             Assert.True(assemblies.TryGetValue("Newtonsoft.Json", out var newtonsoftJson));
-            Assert.Equal(NetFx, newtonsoftJson.Framework);
+            Assert.Equal(GetExpectedAssemblyPath(NetFx, "Newtonsoft.Json"), newtonsoftJson.Path);
 
             Assert.True(assemblies.TryGetValue("Azure.Identity", out var azureIdentity));
-            Assert.Equal(NetStandard20, azureIdentity.Framework);
+            Assert.Equal(GetExpectedAssemblyPath(NetStandard20, "Azure.Identity"), azureIdentity.Path);
         }
 
         [Fact]
@@ -58,16 +60,21 @@ namespace Microsoft.Azure.PowerShell.AssemblyLoading.Test.UnitTests
                 PSVersion = Version.Parse("7.3.0"),
                 OSArchitecture = Architecture.X64
             };
-            ConditionalAssemblyProvider.Initialize(context);
+            ConditionalAssemblyProvider.Initialize(RootPath, context);
             var assemblies = ConditionalAssemblyProvider.GetAssemblies();
 
             Assert.True(assemblies.TryGetValue("Azure.Core", out var azureCore));
-            Assert.Equal(NetCoreApp21, azureCore.Framework);
+            Assert.Equal(GetExpectedAssemblyPath(NetCoreApp21, "Azure.Core"), azureCore.Path);
 
             Assert.False(assemblies.TryGetValue("Newtonsoft.Json", out _));
 
             Assert.True(assemblies.TryGetValue("Azure.Identity", out var azureIdentity));
-            Assert.Equal(NetStandard20, azureIdentity.Framework);
+            Assert.Equal(GetExpectedAssemblyPath(NetStandard20, "Azure.Identity"), azureIdentity.Path);
+        }
+
+        private string GetExpectedAssemblyPath(string framework, string assemblyName)
+        {
+            return Path.Combine(RootPath, framework, $"{assemblyName}.dll");
         }
     }
 }

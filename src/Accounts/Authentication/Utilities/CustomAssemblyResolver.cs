@@ -15,11 +15,13 @@
 using Microsoft.Azure.PowerShell.AssemblyLoading;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 
 namespace Microsoft.Azure.Commands.Profile.Utilities
 {
+    /// <summary>
+    /// Handles how common dependency assemblies like Azure.Core are loaded on .NET framework.
+    /// </summary>
     public static class CustomAssemblyResolver
     {
         private static IDictionary<string, (string Path, Version Version)> NetFxPreloadAssemblies = ConditionalAssemblyProvider.GetAssemblies();
